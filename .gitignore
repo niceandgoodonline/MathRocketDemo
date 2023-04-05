@@ -9,6 +9,8 @@
 /[Bb]uilds/
 /[Ll]ogs/
 /[Mm]emoryCaptures/
+/[Uu]serSettings/
+
 
 # Asset meta data should only be ignored when the corresponding asset is also ignored
 !/[Aa]ssets/**/*.meta
@@ -21,6 +23,9 @@
 
 # Visual Studio cache directory
 .vs/
+
+# Rider stuff
+.idea/
 
 # Gradle cache directory
 .gradle/
