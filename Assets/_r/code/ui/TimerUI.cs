@@ -1,26 +1,37 @@
 using System.Collections;
-using System.Collections.Generic;
 using TMPro;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class TimerUI : MonoBehaviour
 {
     public TMP_Text timerDisplay;
-    public int      timerStart;
+    public float    timeThisSession;
     
     private Coroutine      timerCoroutine;
     private WaitForSeconds waitOneSecond = new WaitForSeconds(1f);
     
-    public void StartTimer()
+    public void StartTimer(float timeAmount)
     {
+        timeThisSession = timeAmount;
         if (timerCoroutine != null) StopCoroutine(timerCoroutine);
         timerCoroutine = StartCoroutine(RunTimer());
     }
 
+    public void StopTimer()
+    {
+        if (timerCoroutine != null) StopCoroutine(timerCoroutine);
+        timerDisplay.text = "DONE!";
+    }
+
     private IEnumerator RunTimer()
     {
-        yield return waitOneSecond;
+        while (timeThisSession > 0)
+        {
+            timeThisSession   -= 1;
+            timerDisplay.text =  timeThisSession.ToString();
+            yield return waitOneSecond;
+        }
+        timerCoroutine = null;
     }
     
     public void __init()
@@ -43,14 +54,13 @@ public class TimerUI : MonoBehaviour
     {
         if(state)
         {
-            
-
+            GameSession.StartSession += StartTimer;
+            GameSession.StopSession  += StopTimer;
         }
         else
         {
-            
+            GameSession.StartSession -= StartTimer;
+            GameSession.StopSession  -= StopTimer;   
         }
     }
-    //void Start() {}
-    //void Update() {}
 }

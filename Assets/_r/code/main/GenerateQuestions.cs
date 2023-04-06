@@ -7,12 +7,15 @@ public class GenerateQuestions : MonoBehaviour
     [Header("Complexity Parameters")]
     public int          minNumberDigits, maxNumberDigits, minOperations, maxOperations;
     public List<string> mathOperators;
+    public bool         allowNegatives;
+    public bool         allowFactions;
 
     [Header("Editor Peek")]
     public string currentQuestion;
     public string currentAnswer;
     
     private Calculator calc = new Calculator();
+    private Coroutine  generateQuestionCoroutine;
 
     public delegate void questionDelegate(string question, string answer);
     public static event questionDelegate NewQuestion;
@@ -33,10 +36,10 @@ public class GenerateQuestions : MonoBehaviour
         mathOperators = new List<string>() { "+", "-", "*" };
     }
 
-    public void GenerateQuestion()
+    public bool GenerateQuestion()
     {
-        int    operations = Random.Range(minOperations, maxOperations);
-        string _a          = "";
+       int    operations = Random.Range(minOperations, maxOperations);
+        string _a         = "";
         currentQuestion   = "";
         for (int i = 0; i < operations; i++)
         {
@@ -45,11 +48,15 @@ public class GenerateQuestions : MonoBehaviour
             
             string _op = GenerateOperator();
             string _b  = GenerateNumber(Random.Range(minNumberDigits, maxNumberDigits));
-            currentQuestion += $"{_a}{_op}{_b}";
+            currentQuestion += $"{_a} {_op} {_b}";
         }
-
-        currentAnswer = calc.Calculate(currentQuestion).ToString();
+        float thisAnswer = calc.Calculate(currentQuestion);
+        if (!allowNegatives && thisAnswer < 1) return false;
+        currentAnswer = thisAnswer.ToString();
+        if (!allowFactions && currentAnswer.Contains(".")) return false;
+        return true;
     }
+
 
     private string GenerateOperator()
     {
@@ -81,8 +88,8 @@ public class GenerateQuestions : MonoBehaviour
 
     private void HandleQuestionRequest()
     {
-        GenerateQuestion();
-        __NewQuestion(currentQuestion, currentAnswer);
+        if(GenerateQuestion()) __NewQuestion(currentQuestion, currentAnswer);
+        else HandleQuestionRequest();
     }
 
     private void SubscribeToEvents(bool state)

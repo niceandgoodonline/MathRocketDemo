@@ -71,12 +71,20 @@ public class QuestionUI : MonoBehaviour
         {
             SessionUI.SubmitEvent         += CompareSubmission;
             GenerateQuestions.NewQuestion += HandleNewQuestionEvent;
+            GameSession.StopSession       += HandleStopSessionEvent;
         }
         else
         {
-            SessionUI.SubmitEvent         += CompareSubmission;
+            SessionUI.SubmitEvent         -= CompareSubmission;
             GenerateQuestions.NewQuestion -= HandleNewQuestionEvent;
+            GameSession.StopSession       -= HandleStopSessionEvent;
         }
+    }
+
+    private void HandleStopSessionEvent()
+    {
+        questionDisplay.text = "Session Ended!";
+        answerField.text     = "";
     }
     private void HandleNumberEvent(InputAction.CallbackContext cx)
     {
