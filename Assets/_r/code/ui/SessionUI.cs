@@ -40,15 +40,19 @@ public class SessionUI : MonoBehaviour
     {
         if(state)
         {
-            
-
+            GameSession.StopSession += HandleStopSessionEvent;
         }
         else
         {
-            
+            GameSession.StopSession -= HandleStopSessionEvent;
         }
     }
-    
+
+    private void HandleStopSessionEvent()
+    {
+        ToggleUIButtons();
+    }
+
     private void ToggleUIButtons()
     {
         startButton.gameObject.SetActive(!startButton.gameObject.activeSelf);
@@ -65,7 +69,6 @@ public class SessionUI : MonoBehaviour
     public void SendStopSessionEvent()
     {
         __SessionEvent(false);
-        ToggleUIButtons();
     }
     
     public void SendSubmitEvent()

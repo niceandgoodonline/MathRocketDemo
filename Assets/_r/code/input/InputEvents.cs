@@ -6,8 +6,8 @@ public class InputEvents : MonoBehaviour
 {
     public static InputEvents instance;
 
-    public string defaultActionMap = "Web";
-    
+    public string                                              defaultActionMap     = "Web";
+    public string                                              currentDrawingDevice = "Mouse";
     public InputAsset                                          inputAsset;
     public Dictionary<string, InputActionMap>                  actionMaps;
     public Dictionary<string, Dictionary<string, InputAction>> inputActions;

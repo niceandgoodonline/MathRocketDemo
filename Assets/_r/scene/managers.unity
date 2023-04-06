@@ -168,6 +168,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   defaultActionMap: Web
+  currentDrawingDevice: Mouse
 --- !u!1 &1999682382
 GameObject:
   m_ObjectHideFlags: 0
@@ -203,6 +204,8 @@ MonoBehaviour:
   minOperations: 0
   maxOperations: 0
   mathOperators: []
+  allowNegatives: 0
+  allowFactions: 0
   currentQuestion: 
   currentAnswer: 
 --- !u!4 &1999682384
@@ -234,7 +237,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   score: 0
   streak: 0
-  sessionSeconds: 120
+  sessionSeconds: 20
 --- !u!1 &2075414232
 GameObject:
   m_ObjectHideFlags: 0

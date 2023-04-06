@@ -310,6 +310,34 @@ public partial class @InputAsset : IInputActionCollection2, IDisposable
                     ""isPartOfComposite"": false
                 }
             ]
+        },
+        {
+            ""name"": ""MouseDrawing"",
+            ""id"": ""d7c564d6-1d35-4d67-a45e-74b5c36f871f"",
+            ""actions"": [
+                {
+                    ""name"": ""DrawLine"",
+                    ""type"": ""Button"",
+                    ""id"": ""d6aa5abb-cca6-411a-badd-b0372678dc79"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": """",
+                    ""id"": ""88d97901-574b-4643-a67c-6bb8451545ea"",
+                    ""path"": ""<Mouse>/leftButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""DrawLine"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                }
+            ]
         }
     ],
     ""controlSchemes"": []
@@ -330,6 +358,9 @@ public partial class @InputAsset : IInputActionCollection2, IDisposable
         m_Web_Clear = m_Web.FindAction("Clear", throwIfNotFound: true);
         m_Web_Delete = m_Web.FindAction("Delete", throwIfNotFound: true);
         m_Web_NegativeSign = m_Web.FindAction("NegativeSign", throwIfNotFound: true);
+        // MouseDrawing
+        m_MouseDrawing = asset.FindActionMap("MouseDrawing", throwIfNotFound: true);
+        m_MouseDrawing_DrawLine = m_MouseDrawing.FindAction("DrawLine", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -522,6 +553,39 @@ public partial class @InputAsset : IInputActionCollection2, IDisposable
         }
     }
     public WebActions @Web => new WebActions(this);
+
+    // MouseDrawing
+    private readonly InputActionMap m_MouseDrawing;
+    private IMouseDrawingActions m_MouseDrawingActionsCallbackInterface;
+    private readonly InputAction m_MouseDrawing_DrawLine;
+    public struct MouseDrawingActions
+    {
+        private @InputAsset m_Wrapper;
+        public MouseDrawingActions(@InputAsset wrapper) { m_Wrapper = wrapper; }
+        public InputAction @DrawLine => m_Wrapper.m_MouseDrawing_DrawLine;
+        public InputActionMap Get() { return m_Wrapper.m_MouseDrawing; }
+        public void Enable() { Get().Enable(); }
+        public void Disable() { Get().Disable(); }
+        public bool enabled => Get().enabled;
+        public static implicit operator InputActionMap(MouseDrawingActions set) { return set.Get(); }
+        public void SetCallbacks(IMouseDrawingActions instance)
+        {
+            if (m_Wrapper.m_MouseDrawingActionsCallbackInterface != null)
+            {
+                @DrawLine.started -= m_Wrapper.m_MouseDrawingActionsCallbackInterface.OnDrawLine;
+                @DrawLine.performed -= m_Wrapper.m_MouseDrawingActionsCallbackInterface.OnDrawLine;
+                @DrawLine.canceled -= m_Wrapper.m_MouseDrawingActionsCallbackInterface.OnDrawLine;
+            }
+            m_Wrapper.m_MouseDrawingActionsCallbackInterface = instance;
+            if (instance != null)
+            {
+                @DrawLine.started += instance.OnDrawLine;
+                @DrawLine.performed += instance.OnDrawLine;
+                @DrawLine.canceled += instance.OnDrawLine;
+            }
+        }
+    }
+    public MouseDrawingActions @MouseDrawing => new MouseDrawingActions(this);
     public interface IWebActions
     {
         void OnNumberOne(InputAction.CallbackContext context);
@@ -538,5 +602,9 @@ public partial class @InputAsset : IInputActionCollection2, IDisposable
         void OnClear(InputAction.CallbackContext context);
         void OnDelete(InputAction.CallbackContext context);
         void OnNegativeSign(InputAction.CallbackContext context);
+    }
+    public interface IMouseDrawingActions
+    {
+        void OnDrawLine(InputAction.CallbackContext context);
     }
 }

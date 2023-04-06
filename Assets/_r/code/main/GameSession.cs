@@ -13,13 +13,26 @@ public class GameSession : MonoBehaviour
     private Coroutine      gameSessionCoroutine;
     private WaitForSeconds waitOneSecond = new WaitForSeconds(1f);
 
-    public delegate void noneDelegate();
-    public delegate void scoreDelegate(int score, int streak);
-    
+    public delegate void             noneDelegate();
+    public delegate void             floatDelegate(float f);
+    public delegate void             scoreDelegate(int score, int streak);
     public static event noneDelegate NextQuestion;
     private void __NextQuestion()
     {
         if (NextQuestion != null) NextQuestion();
+    }
+
+    public static event noneDelegate StopSession;
+
+    private void __StopSession()
+    {
+        if (StopSession != null) StopSession();
+    }
+
+    public static event floatDelegate StartSession;
+    private void __StartSession(float f)
+    {
+        if (StartSession != null) StartSession(f);
     }
     
     public static event scoreDelegate UpdateScore;
@@ -31,7 +44,7 @@ public class GameSession : MonoBehaviour
     public void __init()
     {
         if (gameSessionCoroutine != null) StopCoroutine(gameSessionCoroutine);
-        if (sessionSeconds < 30) sessionSeconds = 30;
+        if (sessionSeconds < 1) sessionSeconds = 1;
         score  = 0;
         streak = 0;
     }
@@ -44,6 +57,7 @@ public class GameSession : MonoBehaviour
             yield return waitOneSecond;
             sessionSeconds -= 1f;
         }
+        __StopSession();
         gameSessionCoroutine = null;
     }
 
@@ -79,10 +93,12 @@ public class GameSession : MonoBehaviour
     {
         if (state)
         {
+            __StartSession(sessionSeconds);
             gameSessionCoroutine = StartCoroutine(TimedGameLoop());
         }
         else
         {
+            __StopSession();
             if (gameSessionCoroutine != null) StopCoroutine(gameSessionCoroutine);
         }
     }

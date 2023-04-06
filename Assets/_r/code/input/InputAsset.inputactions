@@ -288,6 +288,34 @@
                     "isPartOfComposite": false
                 }
             ]
+        },
+        {
+            "name": "MouseDrawing",
+            "id": "d7c564d6-1d35-4d67-a45e-74b5c36f871f",
+            "actions": [
+                {
+                    "name": "DrawLine",
+                    "type": "Button",
+                    "id": "d6aa5abb-cca6-411a-badd-b0372678dc79",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "88d97901-574b-4643-a67c-6bb8451545ea",
+                    "path": "<Mouse>/leftButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "DrawLine",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
         }
     ],
     "controlSchemes": []
