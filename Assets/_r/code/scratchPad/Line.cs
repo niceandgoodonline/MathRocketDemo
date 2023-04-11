@@ -19,6 +19,12 @@ public class Line : MonoBehaviour
             return;
         }
 
+        if (points.Count < 1)
+        {
+            SetPoint(position);
+            return;
+        }
+
         if (Vector2.Distance(points.Last(), position) > pointResolution) SetPoint(position);
     }
     
@@ -29,34 +35,10 @@ public class Line : MonoBehaviour
         lineRenderer.positionCount = points.Count;
         lineRenderer.SetPosition(points.Count - 1, point);
     }
-    public void __init()
-    {
-        
-    }
-
-    private void OnEnable()
-    {
-        __init();
-        SubscribeToEvents(true);
-    }
 
     private void OnDisable()
     {
-        SubscribeToEvents(false);
+        points.Clear();
     }
 
-    private void SubscribeToEvents(bool state)
-    {
-        if(state)
-        {
-            
-
-        }
-        else
-        {
-            
-        }
-    }
-    //void Start() {}
-    //void Update() {}
 }
