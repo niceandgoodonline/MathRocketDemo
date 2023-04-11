@@ -199,13 +199,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f18ee56c033564a4fb1a60311e58f766, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  minNumberDigits: 0
-  maxNumberDigits: 0
+  minDigits: 0
+  maxDigits: 0
   minOperations: 0
   maxOperations: 0
+  addition: 1
+  subtraction: 1
+  multiplication: 1
+  division: 0
+  integers: 0
+  fractions: 0
   mathOperators: []
-  allowNegatives: 0
-  allowFactions: 0
   currentQuestion: 
   currentAnswer: 
 --- !u!4 &1999682384

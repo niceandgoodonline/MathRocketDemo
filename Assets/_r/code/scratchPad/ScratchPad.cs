@@ -22,7 +22,7 @@ public class ScratchPad : MonoBehaviour
     public void __init()
     {
         worldPoint       = new Vector3();
-        // scratchPadActive = false;
+        scratchPadActive = false;
         drawing = false;
         newLine = true;
         if (cam == null) cam = Camera.main;
@@ -60,6 +60,18 @@ public class ScratchPad : MonoBehaviour
             inputEvents.ToggleActionMap(currentDrawingDevice, true);
             ToggleInput(true);
         }
+
+        if (state)
+        {
+            ScratchPadButton.Emit      += ToggleScratchPad;
+            ScratchPadClearButton.Emit += ClearScratchPad;
+        }
+        else
+        {
+            ScratchPadButton.Emit      -= ToggleScratchPad;
+            ScratchPadClearButton.Emit -= ClearScratchPad;
+
+        }
     }
 
     public void ToggleInput(bool state)
@@ -74,6 +86,19 @@ public class ScratchPad : MonoBehaviour
             inputEvents.actionMaps[currentDrawingDevice]["DrawLine"].canceled  -= HandleDrawLineEvent;
             inputEvents.actionMaps[currentDrawingDevice]["DrawLine"].performed -= HandleDrawLineEvent;
 
+        }
+    }
+
+    private void ToggleScratchPad(bool state)
+    {
+        scratchPadActive = state;
+    }
+
+    private void ClearScratchPad()
+    {
+        foreach (Transform child in transform)
+        {
+            linePool.pool.Release(child.gameObject);
         }
     }
 
